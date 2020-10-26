@@ -24,10 +24,11 @@ jobs:
         uses: geertvdc/setup-hub@v1.0.0
 
       # マージされたfeatureブランチをチェックアウトする
-      #- name: checkout feature
-      #  uses: actions/checkout@v2
-      #  with:
-      #    ref: dev
+      - name: checkout feature
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
