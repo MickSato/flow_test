@@ -29,9 +29,8 @@ jobs:
         with:
           ref: ${{github.event.pull_request.head.ref}}
 
-      - name: Dump GitHub context
+      - name: Create Pull Request
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "$GITHUB_CONTEXT"
-          echo ${{ github.event.pull_request.title }}
+          hub pull-request -m "${{github.event.pull_request.title}}" -b release -h ${{github.event.pull_request.head.ref}} -l "PR:draft"
