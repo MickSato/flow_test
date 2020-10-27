@@ -23,14 +23,9 @@ jobs:
       - name: install hub
         uses: geertvdc/setup-hub@v1.0.0
 
-      # マージされたfeatureブランチをチェックアウトする
-      - name: checkout feature
-        uses: actions/checkout@v2
-        with:
-          ref: ${{github.event.pull_request.head.ref}}
-
+      # マージされたheadブランチからreleaseブランチへPRを出す
+      # headブランチにHOTFIXラベルがついてたらmasterへのPRにするとか
+      # レビュワーを自動で入れるとかもやりたい
       - name: Create Pull Request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          hub pull-request -m "${{github.event.pull_request.title}}" -b release -h ${{github.event.pull_request.head.ref}} -l "PR:draft"
+          hub pull-request -m "（ステージングイン済み）${{github.event.pull_request.title}}" -m "${{github.event.pull_request.body}}" -b release -h ${{github.event.pull_request.head.ref}} -l "PR:release"
